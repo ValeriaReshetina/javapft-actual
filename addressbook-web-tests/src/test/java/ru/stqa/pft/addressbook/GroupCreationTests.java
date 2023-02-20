@@ -25,7 +25,7 @@ public class GroupCreationTests {
         wd.findElement(By.name("pass")).clear();
         wd.findElement(By.name("pass")).sendKeys("secret");
         wd.findElement(By.xpath("//input[@value='Login']")).click();
-        System.out.println("Checking");
+
     }
 
     @Test
