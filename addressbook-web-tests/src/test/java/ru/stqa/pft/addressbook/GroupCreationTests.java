@@ -15,4 +15,8 @@ public class GroupCreationTests extends TestBase {
         returnToGroupPage();
     }
 
+    @Test
+    public void testGroupCreation() {
+
+    }
 }
