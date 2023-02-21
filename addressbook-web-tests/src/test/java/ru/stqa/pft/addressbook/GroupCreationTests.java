@@ -16,7 +16,8 @@ public class GroupCreationTests extends TestBase {
     }
 
     @Test
-    public void testGroupCreation() {
+    public void testNewContactCreation() {
+
 
     }
 }
