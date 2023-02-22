@@ -16,4 +16,8 @@ public class NavigationHelper extends HelperBase {
     public void goToNewContactPage() {
         click(By.linkText("http://localhost/addressbook/"));
     }
+
+    public void goToHomePage(ApplicationManager applicationManager) {
+        applicationManager.wd.findElement(By.linkText("home page")).click();
+    }
 }
