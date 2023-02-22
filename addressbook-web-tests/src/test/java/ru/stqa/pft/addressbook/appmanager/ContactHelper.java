@@ -44,4 +44,16 @@ public class ContactHelper extends HelperBase {
         wd.findElement(By.xpath("//input[@value='Delete']")).click();
         wd.switchTo().alert().accept();
     }
+
+    public void initContactModification() {
+        wd.findElement(By.xpath("//img[@alt='Edit']")).click();
+    }
+
+    public void returnToHomePage() {
+        wd.findElement(By.linkText("home")).click();
+    }
+
+    public void submitContactModification() {
+        click(By.name("update"));
+    }
 }

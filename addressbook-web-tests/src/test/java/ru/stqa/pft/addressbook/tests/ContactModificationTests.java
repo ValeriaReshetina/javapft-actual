@@ -1,16 +1,18 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.annotations.Test;
-import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.ContactData;
 
 public class ContactModificationTests extends TestBase {
     @Test
     public void testContactModification() {
-        app.getNavigationHelper().goToGroupPage();
-        app.getGroupHelper().selectGroup();
-        app.getGroupHelper().initGroupModification();
-        app.getGroupHelper().fillGroupForm(new GroupData("test1", "test2", "test3"));
-        app.getGroupHelper().submitGroupModification();
-        app.getGroupHelper().returnToGroupPage();
+
+        app.getContactHelper().selectContact();
+        app.getContactHelper().initContactModification();
+        app.getContactHelper().fillNewContactForm(new ContactData("Valeria", "Evgenyevna",
+                "Reshetina", "89881120310", "lera.reshetina.96@mail.ru"));
+        app.getContactHelper().submitContactModification();
+        app.getContactHelper().returnToHomePage();
+
     }
 }
