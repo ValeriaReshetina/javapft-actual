@@ -47,12 +47,17 @@ public class GroupHelper extends HelperBase {
 
     public void createGroup(GroupData group) {
         initGroupCreation();
-        fillGroupForm(new GroupData("test1", "test2", "test3"));
+        fillGroupForm(group);
         submitGroupCreation();
         returnToGroupPage();
     }
 
     public boolean isThereAGroup() {
         return isElementPresent(By.name("selected[]"));
+    }
+
+    public boolean isThereAGroup(String groupName) {
+
+        return isElementPresent(By.xpath("(//input[contains(@title, '"+ groupName + "')])[1]"));
     }
 }

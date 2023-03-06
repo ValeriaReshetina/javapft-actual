@@ -45,7 +45,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void selectContact() {
-        wd.findElement(By.name("selected[]")).click();
+        wd.findElement(By.xpath("//input[@name='selected[]']")).click();
     }
 
     public void deleteSelectedContact() {
@@ -65,10 +65,9 @@ public class ContactHelper extends HelperBase {
         click(By.name("update"));
     }
 
-    public void createContact(ContactData contact, boolean b) {
+    public void createContact(ContactData contact, boolean creation) {
         initNewContactCreation();
-        fillContactForm(new ContactData("Валерия", "Евгеньевна", "Решетина",
-                        "+7(988)1120310", "flyingscarlett@yandex.ru", "test1"), true);
+        fillContactForm(contact, creation);
         submitNewContactCreation();
     }
 

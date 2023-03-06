@@ -26,5 +26,11 @@ public class NavigationHelper extends HelperBase {
         applicationManager.wd.findElement(By.linkText("home page")).click();
     }
 
+    public void goToHomePage() {
+        if (isElementPresent(By.id("maintable"))) {
+            return;
+        }
+        wd.findElement(By.linkText("home")).click();
+    }
 
 }

@@ -8,11 +8,13 @@ public class ContactCreationTests extends TestBase {
 
     @Test
     public void testNewContactCreation() throws Exception {
+        String groupName = "test1";
 
-        if (!app.getContactHelper().isThereAGroupInContactCreationForm()) {
+        if (!app.getGroupHelper().isThereAGroup(groupName)) {
             app.getNavigationHelper().goToGroupPage();
-            app.getGroupHelper().createGroup(new GroupData("test1", null, null));
+            app.getGroupHelper().createGroup(new GroupData(groupName, null, null));
             app.getContactHelper().goToContactCreationPage();
+
         }
         app.getContactHelper().createContact(new ContactData("Валерия", "Евгеньевна",
                 "Решетина", "+7(988)1120310", "flyingscarlett@yandex.ru", "test1"), true);
