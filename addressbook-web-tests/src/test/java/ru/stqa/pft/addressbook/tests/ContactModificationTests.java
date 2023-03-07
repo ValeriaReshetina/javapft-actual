@@ -14,7 +14,7 @@ public class ContactModificationTests extends TestBase {
                     "Решетина", "+7(988)1120310",
                     "flyingscarlett@yandex.ru", "test1"), true);
         }
-        app.getContactHelper().selectContact();
+        app.getContactHelper().selectContact(before - 1);
         app.getContactHelper().initContactModification();
         app.getContactHelper().fillContactForm(new ContactData("Valeria", "Evgenyevna",
                 "Reshetina", "89881120310", "lera.reshetina.96@mail.ru", null), false);
