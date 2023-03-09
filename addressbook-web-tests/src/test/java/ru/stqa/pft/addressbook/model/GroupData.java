@@ -10,10 +10,15 @@ public class GroupData {
 
 
     public GroupData(String name, String header, String footer) {
-        this.id = 0;
+        this.id = Integer.MAX_VALUE;
         this.name = name;
         this.header = header;
         this.footer = footer;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 
     public GroupData(int id, String name, String header, String footer) {
@@ -44,13 +49,6 @@ public class GroupData {
     }
 
     @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "GroupData{" +
                 "id='" + id + '\'' +
@@ -65,7 +63,6 @@ public class GroupData {
 
         GroupData groupData = (GroupData) o;
 
-        if (id != groupData.id) return false;
         return Objects.equals(name, groupData.name);
     }
 }
