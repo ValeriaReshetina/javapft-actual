@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
-import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,25 +12,25 @@ public class ContactModificationTests extends TestBase {
 
     @BeforeMethod
     public void ensurePreconditions() {
-        if (!app.getContactHelper().isThereAContact()) {
-            app.getContactHelper().createContact(new ContactData("Валерия", "Евгеньевна",
+        if (app.contact().list().size() == 0) {
+            app.contact().create(new ContactData("Валерия", "Евгеньевна",
                     "Решетина", "+7(988)1120310",
                     "flyingscarlett@yandex.ru", "test1"), true);
         }
     }
 
-    @Test(enabled = false)
+    @Test
     public void testContactModification() {
-        List<ContactData> before = app.getContactHelper().getContactList();
-        app.getContactHelper().selectContact(before.size() - 1);
-        app.getContactHelper().initContactModification(before.size() - 1);
+        List<ContactData> before = app.contact().list();
+        app.contact().selectContact(before.size() - 1);
+        app.contact().initContactModification(before.size() - 1);
         ContactData contact = new ContactData(before.get(before.size() - 1).getId(), "Valeria",
                 "Evgenyevna", "Reshetina", "89881120310",
                 "lera.reshetina.96@mail.ru", null);
-        app.getContactHelper().fillContactForm(contact, false);
-        app.getContactHelper().submitContactModification();
-        app.getContactHelper().returnToHomePage();
-        List<ContactData> after = app.getContactHelper().getContactList();
+        app.contact().fillContactForm(contact, false);
+        app.contact().submitContactModification();
+        app.contact().returnToHomePage();
+        List<ContactData> after = app.contact().list();
         Assert.assertEquals(after.size(), before.size());
 
         before.remove(before.size() - 1);
