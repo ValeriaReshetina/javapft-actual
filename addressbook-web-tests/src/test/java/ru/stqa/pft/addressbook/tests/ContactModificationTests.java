@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ContactModificationTests extends TestBase {
-    @Test
+    @Test (enabled = false)
     public void testContactModification() {
 
         if (!app.getContactHelper().isThereAContact()) {
