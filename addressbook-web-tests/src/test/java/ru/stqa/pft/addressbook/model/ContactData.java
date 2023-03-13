@@ -3,34 +3,14 @@ package ru.stqa.pft.addressbook.model;
 import java.util.Objects;
 
 public class ContactData {
-    private int id;
-    private final String firstName;
-    private final String middleName;
-    private final String lastName;
-    private final String mobile;
-    private final String eMail;
+    private int id = Integer.MAX_VALUE;;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String mobile;
+    private String eMail;
     private String group;
 
-    public ContactData(String firstName, String middleName, String lastName, String mobile,
-                       String eMail, String group) {
-        this.id = Integer.MAX_VALUE;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.mobile = mobile;
-        this.eMail = eMail;
-        this.group = group;
-    }
-    public ContactData(int id, String firstName, String middleName, String lastName, String mobile,
-                       String eMail, String group) {
-        this.id = id;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.mobile = mobile;
-        this.eMail = eMail;
-        this.group = group;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -48,7 +28,7 @@ public class ContactData {
         return mobile;
     }
 
-    public String geteMail() {
+    public String getEmail() {
         return eMail;
     }
 
@@ -60,8 +40,39 @@ public class ContactData {
         return id;
     }
 
-    public void setId(int id) {
+    public ContactData withId(int id) {
         this.id = id;
+        return this;
+    }
+
+    public ContactData withFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public ContactData withMiddleName(String middleName) {
+        this.middleName = middleName;
+        return this;
+    }
+
+    public ContactData withLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public ContactData withMobile(String mobile) {
+        this.mobile = mobile;
+        return this;
+    }
+
+    public ContactData withEmail(String eMail) {
+        this.eMail = eMail;
+        return this;
+    }
+
+    public ContactData withGroup(String group) {
+        this.group = group;
+        return this;
     }
 
     @Override

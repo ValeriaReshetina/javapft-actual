@@ -21,9 +21,9 @@ public class ContactDeletionTests extends TestBase {
             app.goTo().homePage();
         }
         if (app.contact().list().size() == 0) {
-            app.contact().create(new ContactData("Валерия", "Евгеньевна",
-                    "Решетина", "+7(988)1120310",
-                    "flyingscarlett@yandex.ru", groupName), true);
+            app.contact().create(new ContactData().withFirstName("Валерия").withMiddleName("Евгеньевна")
+                    .withLastName("Решетина").withMobile("+7(988)1120310")
+                    .withEmail("flyingscarlett@yandex.ru").withGroup("test1"), true);
         }
     }
 
