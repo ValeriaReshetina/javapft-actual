@@ -8,11 +8,6 @@ public class GroupData {
     private String header;
     private String footer;
 
-    @Override
-    public int hashCode() {
-        return name != null ? name.hashCode() : 0;
-    }
-
     public int getId() {
         return id;
     }
@@ -64,6 +59,14 @@ public class GroupData {
 
         GroupData groupData = (GroupData) o;
 
+        if (id != groupData.id) return false;
         return Objects.equals(name, groupData.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
 }

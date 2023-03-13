@@ -8,7 +8,9 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -93,6 +95,10 @@ public class ContactHelper extends HelperBase {
         return isElementPresent(By.name("add new"));
     }
 
+    public int getContactCount() {
+        return wd.findElements(By.name("selected[]")).size();
+    }
+
     public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.name("entry"));
@@ -100,13 +106,20 @@ public class ContactHelper extends HelperBase {
             String lastName = String.valueOf(element.findElement(By.xpath(".//td[2]")).getText());
             String firstName = String.valueOf(element.findElement(By.xpath(".//td[3]")).getText());
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            ContactData contact = new ContactData().withId(id).withFirstName(firstName).withLastName(lastName);
-            contacts.add(contact);
+            contacts.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName));
         }
         return contacts;
     }
 
-    public int getContactCount() {
-        return wd.findElements(By.name("selected[]")).size();
+    public Set<ContactData> all() {
+        Set<ContactData> contacts = new HashSet<ContactData>();
+        List<WebElement> elements = wd.findElements(By.name("entry"));
+        for (WebElement element : elements) {
+            String lastName = String.valueOf(element.findElement(By.xpath(".//td[2]")).getText());
+            String firstName = String.valueOf(element.findElement(By.xpath(".//td[3]")).getText());
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+            contacts.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName));
+        }
+        return contacts;
     }
 }
