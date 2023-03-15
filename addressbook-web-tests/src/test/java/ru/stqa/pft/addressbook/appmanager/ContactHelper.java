@@ -80,6 +80,10 @@ public class ContactHelper extends HelperBase {
         wd.findElements(By.xpath("//img[@alt='Edit']")).get(index).click();
     }
 
+    public void initContactModificationById(int id) {
+        wd.findElements(By.xpath("//img[@alt='Edit']")).get(id).click();
+    }
+
     public void returnToHomePage() {
         wd.findElement(By.linkText("home")).click();
     }
