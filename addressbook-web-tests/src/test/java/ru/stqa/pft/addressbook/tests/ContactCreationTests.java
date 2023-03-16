@@ -41,9 +41,9 @@ public class ContactCreationTests extends TestBase {
     public void negativeTestNewContactCreation() {
         app.goTo().homePage();
         Contacts before = app.contact().all();
-        ContactData contact = new ContactData().withFirstName("Валерия").withMiddleName("Евгеньевна")
+        ContactData contact = new ContactData().withFirstName("Валерия'").withMiddleName("Евгеньевна")
                 .withLastName("Решетина").withMobile("+7(988)1120310")
-                .withEmail("flyingscarlett@yandex.ru").withGroup("test1'");
+                .withEmail("flyingscarlett@yandex.ru").withGroup("test1");
         app.contact().create(contact, true);
         app.navigationHelper.homePage(app);
         assertThat(app.contact().count(), equalTo(before.size()));
