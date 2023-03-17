@@ -143,7 +143,7 @@ public class ContactHelper extends HelperBase {
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             String allPhones = String.valueOf(element.findElement(By.xpath(".//td[6]")).getText());
             contactCache.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName)
-                    .withHomePhone(allPhones));
+                    .withAllPhones(allPhones));
         }
         return new Contacts(contactCache);
     }
