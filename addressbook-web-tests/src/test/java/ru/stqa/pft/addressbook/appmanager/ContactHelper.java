@@ -141,10 +141,9 @@ public class ContactHelper extends HelperBase {
             String lastName = String.valueOf(element.findElement(By.xpath(".//td[2]")).getText());
             String firstName = String.valueOf(element.findElement(By.xpath(".//td[3]")).getText());
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            String[] phones = String.valueOf(element.findElement(By.xpath(".//td[6]")).getText())
-                    .split("\n");
+            String allPhones = String.valueOf(element.findElement(By.xpath(".//td[6]")).getText());
             contactCache.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName)
-                    .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+                    .withHomePhone(allPhones));
         }
         return new Contacts(contactCache);
     }

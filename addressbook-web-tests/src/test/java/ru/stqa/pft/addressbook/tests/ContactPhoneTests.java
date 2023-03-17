@@ -14,9 +14,15 @@ public class ContactPhoneTests extends TestBase{
         ContactData contact = app.contact().all().iterator().next();
         ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
 
-        assertThat(contact.getHomePhone(), equalTo(cleaned(contactInfoFromEditForm.getHomePhone())));
-        assertThat(contact.getMobilePhone(), equalTo(cleaned(contactInfoFromEditForm.getMobilePhone())));
-        assertThat(contact.getWorkPhone(), equalTo(cleaned(contactInfoFromEditForm.getWorkPhone())));
+        assertThat(contact.getAllPhones(), equalTo(mergePhones(contactInfoFromEditForm)));
+        assertThat(contact.getAllPhones(), equalTo(cleaned(contactInfoFromEditForm.getMobilePhone())));
+        assertThat(contact.getAllPhones(), equalTo(cleaned(contactInfoFromEditForm.getWorkPhone())));
+    }
+
+    private String mergePhones(ContactData contact) {
+       // Arrays.asList(contact.getHomePhone(), contact.getMobilePhone(), contact.getWorkPhone()).
+         //       stream().filter((s) -> )
+        return null;
     }
 
     public String cleaned(String phone) {
