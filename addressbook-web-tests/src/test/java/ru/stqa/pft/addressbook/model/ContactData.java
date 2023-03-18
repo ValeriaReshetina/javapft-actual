@@ -9,10 +9,40 @@ public class ContactData {
     private String lastName;
     private String mobilePhone;
     private String eMail;
+    private String eMail2;
     private String group;
     private String homePhone;
     private String workPhone;
     private String allPhones;
+    private String address;
+    private String allEmails;
+
+    public String getAllEmails() {
+        return allEmails;
+    }
+
+    public ContactData withAllMails(String allEmails) {
+        this.allEmails = allEmails;
+        return this;
+    }
+
+    public String getEmail2() {
+        return eMail2;
+    }
+
+    public ContactData withEmail2(String eMail2) {
+        this.eMail2 = eMail2;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public ContactData withAddress(String address) {
+        this.address = address;
+        return this;
+    }
 
     public String getAllPhones() {
         return allPhones;

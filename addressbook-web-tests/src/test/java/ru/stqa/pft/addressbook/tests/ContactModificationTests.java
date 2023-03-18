@@ -12,7 +12,7 @@ public class ContactModificationTests extends TestBase {
 
     @BeforeMethod
     public void ensurePreconditions() {
-        if (app.contact().list().size() == 0) {
+        if (app.contact().all().size() == 0) {
             app.contact().create(new ContactData().withFirstName("Валерия").withMiddleName("Евгеньевна")
                     .withLastName("Решетина").withMobile("+7(988)1120310")
                     .withEmail("flyingscarlett@yandex.ru").withGroup("test1"), true);

@@ -138,12 +138,15 @@ public class ContactHelper extends HelperBase {
         List<WebElement> elements = wd.findElements(By.name("entry"));
 
         for (WebElement element : elements) {
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             String lastName = String.valueOf(element.findElement(By.xpath(".//td[2]")).getText());
             String firstName = String.valueOf(element.findElement(By.xpath(".//td[3]")).getText());
-            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             String allPhones = String.valueOf(element.findElement(By.xpath(".//td[6]")).getText());
+            String allEmails = element.findElement(By.xpath(".//td[5]")).getText();
+            String address = String.valueOf(element.findElement(By.xpath(".//td[4]")).getText());
+
             contactCache.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName)
-                    .withAllPhones(allPhones));
+                    .withAllPhones(allPhones).withAllMails(allEmails).withAddress(address));
         }
         return new Contacts(contactCache);
     }
@@ -156,8 +159,11 @@ public class ContactHelper extends HelperBase {
         String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
         String work = wd.findElement(By.name("work")).getAttribute("value");
         String eMail = wd.findElement(By.name("email")).getAttribute("value");
+        String eMail2 = wd.findElement(By.name("email2")).getAttribute("value");
+        String address = wd.findElement(By.name("address")).getAttribute("value");
         wd.navigate().back();
         return new ContactData().withId(contact.getId()).withFirstName(firstName).withLastName(lastName)
-                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
+                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work).withEmail(eMail).withEmail2(eMail2)
+                .withAddress(address);
     }
 }
