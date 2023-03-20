@@ -6,7 +6,6 @@ import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -43,10 +42,7 @@ public class ContactInfoTests extends TestBase{
     }
 
     private String mergeMails(ContactData contact) {
-        return Arrays.asList(contact.getEmail(), contact.getEmail2(), contact.getAddress())
-                .stream().filter((s) -> ! s.equals(""))
-                .map(ContactInfoTests::mailCleaned)
-                .collect(Collectors.joining("\n"));
+        return contact.getAllEmails();
     }
 
     private String mergePhones(ContactData contact) {
@@ -57,21 +53,10 @@ public class ContactInfoTests extends TestBase{
     }
 
     private String address(ContactData contact) {
-        return Collections.singletonList(contact.getAddress())
-                .stream().filter((s) -> ! s.equals(""))
-                .map(ContactInfoTests::addressCleaned)
-                .collect(Collectors.joining("\n"));
+        return contact.getAddress();
     }
 
     public static String phoneCleaned(String phone) {
         return phone.replaceAll("\\s", "").replaceAll("[-()]", "");
-    }
-
-    public static String mailCleaned(String eMail) {
-        return eMail.replaceAll("\\s", "").replaceAll("[-()]", "");
-    }
-
-    public static String addressCleaned(String address) {
-        return address.replaceAll("\\s", "").replaceAll("[-()]", "");
     }
 }
