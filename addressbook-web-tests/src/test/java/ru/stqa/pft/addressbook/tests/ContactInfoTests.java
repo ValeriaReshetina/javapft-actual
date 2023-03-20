@@ -42,7 +42,8 @@ public class ContactInfoTests extends TestBase{
     }
 
     private String mergeMails(ContactData contact) {
-        return contact.getAllEmails();
+        return Arrays.asList(contact.getEmail(), contact.getEmail2())
+                .stream().filter((s) -> ! s.equals("")).collect(Collectors.joining("\n"));
     }
 
     private String mergePhones(ContactData contact) {
