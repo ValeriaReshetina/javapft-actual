@@ -8,16 +8,36 @@ public class ContactData {
     private String firstName;
     private String middleName;
     private String lastName;
-    private String mobilePhone;
-    private String eMail;
-    private String eMail2;
     private String group;
-    private String homePhone;
+    private String mobilePhone;
+    private String firstHomePhone;
     private String workPhone;
+    private String secondHomePhone;
+    private String eMail;
+    private String secondEmail;
+    private String thirdEmail;
+    private String allEmails;
     private String allPhones;
     private String address;
-    private String allEmails;
     private File photo;
+
+    public String getSecondHomePhone() {
+        return secondHomePhone;
+    }
+
+    public ContactData withSecondHomePhone(String secondWorkPhone) {
+        this.secondHomePhone = secondWorkPhone;
+        return this;
+    }
+
+    public String getThirdEmail() {
+        return thirdEmail;
+    }
+
+    public ContactData withThirdEmail(String thirdEmail) {
+        this.thirdEmail = thirdEmail;
+        return this;
+    }
 
     public File getPhoto() {
         return photo;
@@ -37,12 +57,12 @@ public class ContactData {
         return this;
     }
 
-    public String getEmail2() {
-        return eMail2;
+    public String getSecondEmail() {
+        return secondEmail;
     }
 
-    public ContactData withEmail2(String eMail2) {
-        this.eMail2 = eMail2;
+    public ContactData withSecondEmail(String secondEmail) {
+        this.secondEmail = secondEmail;
         return this;
     }
 
@@ -92,8 +112,8 @@ public class ContactData {
         return id;
     }
 
-    public String getHomePhone() {
-        return homePhone;
+    public String getFirstHomePhone() {
+        return firstHomePhone;
     }
 
     public String getWorkPhone() {
@@ -135,8 +155,8 @@ public class ContactData {
         return this;
     }
 
-    public ContactData withHomePhone(String home) {
-        this.homePhone = home;
+    public ContactData withFirstHomePhone(String home) {
+        this.firstHomePhone = home;
         return this;
     }
 
