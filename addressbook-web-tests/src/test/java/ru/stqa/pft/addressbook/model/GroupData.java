@@ -3,18 +3,32 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @XStreamAlias("group")
+@Entity
+@Table(name = "group_list")
 public class GroupData {
     @XStreamOmitField
+    @Id
+    @Column(name = "group_id")
     private int id = Integer.MAX_VALUE;
     @Expose
+    @Column(name = "group_name")
     private String name;
     @Expose
+    @Column(name = "group_header")
+    @Type(type = "text")
     private String header;
     @Expose
+    @Column(name = "group_footer")
+    @Type(type = "text")
     private String footer;
 
     public int getId() {
@@ -69,13 +83,17 @@ public class GroupData {
         GroupData groupData = (GroupData) o;
 
         if (id != groupData.id) return false;
-        return Objects.equals(name, groupData.name);
+        if (!Objects.equals(name, groupData.name)) return false;
+        if (!Objects.equals(header, groupData.header)) return false;
+        return Objects.equals(footer, groupData.footer);
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (header != null ? header.hashCode() : 0);
+        result = 31 * result + (footer != null ? footer.hashCode() : 0);
         return result;
     }
 }
