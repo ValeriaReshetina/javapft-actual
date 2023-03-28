@@ -174,4 +174,13 @@ public class ContactHelper extends HelperBase {
                 .withWorkPhone(workPhone).withEmail(eMail).withSecondEmail(secondEmail).withThirdEmail(thirdEmail)
                 .withAddress(address);
     }
+
+    public void addContactToGroup() {
+        wd.findElement(By.xpath("//input[@value='Add to']")).click();
+    }
+
+    public void selectGroupWithContacts() {
+        click(By.name("group"));
+        wd.findElement(By.name("option")).getAttribute("value");
+    }
 }
