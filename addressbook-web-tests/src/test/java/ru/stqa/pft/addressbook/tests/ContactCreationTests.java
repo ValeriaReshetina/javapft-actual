@@ -3,12 +3,11 @@ package ru.stqa.pft.addressbook.tests;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.*;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
 
 import java.io.BufferedReader;
@@ -71,6 +70,7 @@ public class ContactCreationTests extends TestBase {
     @Test(dataProvider = "validContactsFromJson")
     public void testNewContactCreation(ContactData contact) {
         app.goTo().homePage();
+        Groups groups = app.db().groups();
         Contacts before = app.db().contacts();
         app.contact().create(contact, true);
         app.navigationHelper.homePage(app);
@@ -78,15 +78,17 @@ public class ContactCreationTests extends TestBase {
         Contacts after = app.db().contacts();
         assertThat(after, equalTo(
                 before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+        verifyContactListInUI();
     }
 
     @Test
     public void negativeTestNewContactCreation() {
         app.goTo().homePage();
+        Groups groups = app.db().groups();
         Contacts before = app.db().contacts();
         ContactData contact = new ContactData().withFirstName("Валерия'").withMiddleName("Евгеньевна")
                 .withLastName("Решетина").withMobile("+7(988)1120310")
-                .withEmail("flyingscarlett@yandex.ru").withGroup("test1");
+                .withEmail("flyingscarlett@yandex.ru").inGroup(groups.iterator().next());
         app.contact().create(contact, true);
         app.navigationHelper.homePage(app);
         assertThat(app.contact().count(), equalTo(before.size()));
