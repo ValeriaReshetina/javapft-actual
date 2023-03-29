@@ -15,18 +15,25 @@ public class AddContactToGroupTests extends TestBase {
     @BeforeMethod
     public void ensurePreconditions() {
 
+//        app.goTo().groupPage();
+//        Groups groups = app.db().groups();
+//        if (app.db().groups().size() == 0) {
+//            app.group().create(new GroupData().withName("test " + java.time.LocalTime.now()));
+//            app.goTo().homePage();
+//        }
+//        if (app.contact().list().size() == 0) {
+//            app.contact().create(new ContactData().withFirstName("Валерия").withMiddleName("Евгеньевна")
+//                    .withLastName("Решетина").withAddress("Ессентуки, Октябрьская 337, 357600").
+//                    withMobile("+7(988)1120310").withEmail("flyingscarlett@yandex.ru").
+//                    inGroup(groups.iterator().next()), true);
+//        }
         app.goTo().groupPage();
-        Groups groups = app.db().groups();
-        if (app.db().groups().size() == 0) {
-            app.group().create(new GroupData().withName("test1"));
-            app.goTo().homePage();
-        }
-        if (app.contact().list().size() == 0) {
-            app.contact().create(new ContactData().withFirstName("Валерия").withMiddleName("Евгеньевна")
+        app.group().create(new GroupData().withName("test " + java.time.LocalTime.now()));
+        app.goTo().homePage();
+        app.contact().create(new ContactData().withFirstName("Валерия").withMiddleName("Евгеньевна")
                     .withLastName("Решетина").withAddress("Ессентуки, Октябрьская 337, 357600").
                     withMobile("+7(988)1120310").withEmail("flyingscarlett@yandex.ru").
                     inGroup(groups.iterator().next()), true);
-        }
     }
 
     @Test
