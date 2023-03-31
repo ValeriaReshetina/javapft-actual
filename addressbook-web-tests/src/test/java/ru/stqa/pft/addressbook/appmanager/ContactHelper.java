@@ -175,12 +175,33 @@ public class ContactHelper extends HelperBase {
                 .withAddress(address);
     }
 
-    public void addContactToGroup() {
+    public void addContactToSelectedGroup() {
         wd.findElement(By.xpath("//input[@value='Add to']")).click();
     }
 
     public void selectGroupWithContacts() {
         click(By.name("group"));
         wd.findElement(By.name("option")).getAttribute("value");
+    }
+
+    public void selectGroupByName(String groupName){
+        new Select(wd.findElement(By.xpath("//select[@name='to_group']")))
+                .selectByVisibleText(groupName);
+    }
+
+    public void selectContactByFirstName(String contactFirstName){
+        wd.findElement(By.xpath("//tr[@name='entry']/td[text()='" + contactFirstName
+                + "']/parent::tr/td[1]")).click();
+    }
+
+
+    public void deleteContactFromSelectedGroup() {
+        wd.findElement(By.xpath("//input[@value='Delete']")).click();
+        wd.switchTo().alert().accept();
+
+    }
+
+    public void goToGroupPageAfterAddingContact() {
+        wd.findElement(By.xpath("//a[contains(@href, 'group=')]")).click();
     }
 }
