@@ -11,6 +11,8 @@ import ru.stqa.pft.addressbook.model.Contacts;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.testng.Assert.*;
+
 public class ContactHelper extends HelperBase {
 
     public ContactHelper(WebDriver wd) {
@@ -41,12 +43,12 @@ public class ContactHelper extends HelperBase {
 
         if (creation) {
             if (contactData.getGroups().size() > 0) {
-                Assert.assertTrue(contactData.getGroups().size() == 1);
+                assertTrue(contactData.getGroups().size() == 1);
                 new Select(wd.findElement(By.name("new_group")))
                         .selectByVisibleText((contactData.getGroups().iterator().next().getName()));
             }
         } else {
-            Assert.assertFalse(isElementPresent(By.name("new_group")));
+            assertFalse(isElementPresent(By.name("new_group")));
         }
     }
 
@@ -198,7 +200,7 @@ public class ContactHelper extends HelperBase {
     public void deleteContactFromSelectedGroup() {
         wd.findElement(By.xpath("//input[@value='Delete']")).click();
         wd.switchTo().alert().accept();
-        Assert.assertTrue(isElementPresent(By.xpath("//*[text()='Record successful deleted']")));
+        assertTrue(isElementPresent(By.xpath("//*[text()='Record successful deleted']")));
     }
 
     public void goToGroupPageAfterAddingContact() {

@@ -82,12 +82,12 @@ public class DeletingContactFromGroupTests extends TestBase {
 
         for (GroupData group : allGroupsDataFromDB) {
 
-            if (group.getName().equals(randomGroupName)){
+            if (group.getName().equals(randomGroupName)) {
                 createdGroupFoundViaDB = true;
 
                 Contacts contactsInCurrentGroup = group.getContacts();
 
-                for(ContactData contactData : contactsInCurrentGroup){
+                for(ContactData contactData : contactsInCurrentGroup) {
                     Assert.assertNotEquals(contactData.getId(), createdContactId,
                             "Contact with ID " + contactData.getId() + " found in group " + randomGroupName);
 

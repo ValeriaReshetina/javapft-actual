@@ -10,7 +10,7 @@ dependencies {
     implementation group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
 }
 
-task testGroups(type: Test) {
+test {
     useTestNG() {
         suites "src/test/resources/testng.xml"
     }
