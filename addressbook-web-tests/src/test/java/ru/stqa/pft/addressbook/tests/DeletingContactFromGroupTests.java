@@ -5,11 +5,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
-import ru.stqa.pft.addressbook.model.Groups;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,18 +21,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class DeletingContactFromGroupTests extends TestBase {
 
     private SessionFactory sessionFactory;
-    private String randomFirstName = "testName" + ThreadLocalRandom.current().nextInt(1, 10000);
+    private String randomContactFirstName = "testName" + ThreadLocalRandom.current().nextInt(1, 10000);
     private String randomGroupName = "groupName" + ThreadLocalRandom.current().nextInt(1, 10000);
 
     @BeforeMethod
     public void ensurePreconditions() {
-        app.contact().create(new ContactData().withFirstName(randomFirstName).withMiddleName("Евгеньевна")
+        app.contact().create(new ContactData().withFirstName(randomContactFirstName).withMiddleName("Евгеньевна")
                 .withLastName("Решетина").withAddress("Ессентуки, Октябрьская 337, 357600").
                 withMobile("+7(988)1120310").withEmail("flyingscarlett@yandex.ru"),true);
         app.goTo().groupPage();
         app.group().create(new GroupData().withName(randomGroupName));
         app.goTo().homePage();
-        app.contact().selectContactByFirstName(randomFirstName);
+        app.contact().selectContactByFirstName(randomContactFirstName);
         app.contact().selectGroupByName(randomGroupName);
         app.contact().addContactToSelectedGroup();
 
@@ -43,38 +44,63 @@ public class DeletingContactFromGroupTests extends TestBase {
         }
         catch (Exception e) {
             e.printStackTrace();
-            StandardServiceRegistryBuilder.destroy( registry );
+            StandardServiceRegistryBuilder.destroy(registry);
         }
     }
 
     @Test
-    public void deletingContactToGroupTest() {
-
-        app.contact().goToGroupPageAfterAddingContact();
-        app.contact().selectContactByFirstName(randomFirstName);
-
-        app.contact().deleteContactFromSelectedGroup();
+    public void deletingContactFromGroupTest() {
+        verifyGroupListInUI();
+        verifyContactListInUI();
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<ContactData> allContactsData = session.createQuery( "from ContactData").list();
+        Integer createdContactId = null;
 
-        boolean isDeletedContactFoundViaDb = false;
-
-        for (ContactData contact : allContactsData) {
-            if (contact.getFirstName().equals(randomFirstName)){
-                isDeletedContactFoundViaDb = true;
+        List<ContactData> allContactsDataFromDB = session.createQuery("from ContactData" ).list();
+        for ( ContactData contact : allContactsDataFromDB ) {
+            if (contact.getFirstName().equals(randomContactFirstName)){
+                createdContactId = contact.getId();
             }
-            if (isDeletedContactFoundViaDb == true) {
-                break;
+        }
+        session.getTransaction().commit();
+
+        Assert.assertNotEquals(createdContactId, null,
+                "CreatedContactId for contact via DB: " + randomContactFirstName + " is null");
+
+        app.contact().goToGroupPageAfterAddingContact();
+        app.contact().selectContactByFirstName(randomContactFirstName);
+
+        app.contact().deleteContactFromSelectedGroup();
+
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<GroupData> allGroupsDataFromDB = session.createQuery( "from GroupData").list();
+
+        boolean createdGroupFoundViaDB = false;
+
+        for (GroupData group : allGroupsDataFromDB) {
+
+            if (group.getName().equals(randomGroupName)){
+                createdGroupFoundViaDB = true;
+
+                Contacts contactsInCurrentGroup = group.getContacts();
+
+                for(ContactData contactData : contactsInCurrentGroup){
+                    Assert.assertNotEquals(contactData.getId(), createdContactId,
+                            "Contact with ID " + contactData.getId() + " found in group " + randomGroupName);
+
+                    Assert.assertNotEquals(contactData.getFirstName(), randomContactFirstName,
+                            "Contact with first name " + contactData.getFirstName() + " found in group "
+                                    + randomGroupName);
+                }
             }
         }
         session.getTransaction().commit();
         session.close();
 
-        assertThat(isDeletedContactFoundViaDb, equalTo(false));
-        verifyGroupListInUI();
-        verifyContactListInUI();
+        Assert.assertNotEquals(createdGroupFoundViaDB, false,
+                "Created group not found via DB by name: " + randomGroupName);
     }
 }

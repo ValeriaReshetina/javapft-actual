@@ -198,7 +198,7 @@ public class ContactHelper extends HelperBase {
     public void deleteContactFromSelectedGroup() {
         wd.findElement(By.xpath("//input[@value='Delete']")).click();
         wd.switchTo().alert().accept();
-
+        Assert.assertTrue(isElementPresent(By.xpath("//*[text()='Record successful deleted']")));
     }
 
     public void goToGroupPageAfterAddingContact() {
