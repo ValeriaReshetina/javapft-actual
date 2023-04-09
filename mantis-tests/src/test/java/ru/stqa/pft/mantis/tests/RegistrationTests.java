@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.util.List;
 
 import ru.lanwen.verbalregex.VerbalExpression;
-import ru.stqa.pft.mantis.
 import ru.stqa.pft.mantis.model.MailMessage;
+
+import static org.testng.Assert.*;
 
 public class RegistrationTests extends TestBase {
 
@@ -22,11 +23,15 @@ public class RegistrationTests extends TestBase {
 
     @Test
     public void testRegistration() throws MessagingException, IOException {
-        String email = "user1@localhost.localdomain";
-        app.registration().start("user1", email);
-        List<MailMessage> mailMessages = app.mail().waitForMail(2, 10000);
+        long now = System.currentTimeMillis();
+        String user = String.format("user%s", now);
+        String password = "password";
+        String email = String.format("user%s1@localhost.localdomain", now);
+        app.registration().start(user, email);
+        List<MailMessage> mailMessages = app.mail().waitForMail(2, 1000);
         String confirmationLink = findConfirmationLink(mailMessages, email);
         app.registration().finish(confirmationLink, "password");
+        assertTrue(app.newSession().login(user, password));
     }
 
     private String findConfirmationLink(List<MailMessage> mailMessages, String email) {

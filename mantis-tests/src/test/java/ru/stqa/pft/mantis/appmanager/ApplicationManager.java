@@ -1,5 +1,6 @@
 package ru.stqa.pft.mantis.appmanager;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -62,12 +63,17 @@ public class ApplicationManager {
 
     public WebDriver getDriver() {
         if (wd == null) {
+
             if (browser.equals(BrowserType.FIREFOX)) {
+                WebDriverManager.firefoxdriver().setup();
                 wd = new FirefoxDriver();
             } else if (browser.equals(BrowserType.CHROME)) {
+                WebDriverManager.chromedriver().setup();
                 wd = new ChromeDriver();
-            } else if (browser.equals(BrowserType.IE))
+            } else if (browser.equals(BrowserType.IE)) {
+                WebDriverManager.iedriver();
                 wd = new InternetExplorerDriver();
+            }
 
             wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
             wd.get(properties.getProperty("web.baseUrl"));
