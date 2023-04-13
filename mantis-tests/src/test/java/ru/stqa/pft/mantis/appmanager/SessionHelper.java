@@ -1,4 +1,4 @@
-package ru.stqa.pft.addressbook.appmanager;
+package ru.stqa.pft.mantis.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 public class SessionHelper extends HelperBase {
 
     public SessionHelper(WebDriver wd) {
-        super(wd);
+        super();
     }
 
     public void login(String username, String password) {

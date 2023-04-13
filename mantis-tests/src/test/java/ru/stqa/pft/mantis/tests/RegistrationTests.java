@@ -1,7 +1,5 @@
 package ru.stqa.pft.mantis.tests;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.mail.MessagingException;
@@ -26,7 +24,7 @@ public class RegistrationTests extends TestBase {
         long now = System.currentTimeMillis();
         String user = String.format("user%s", now);
         String password = "password";
-        String email = String.format("user%s1@localhost", now);
+        String email = String.format("user%s@localhost", now);
         app.james().createUser(user, password);
         app.registration().start(user, email);
         //List<MailMessage> mailMessages = app.mail().waitForMail(2, 1000);

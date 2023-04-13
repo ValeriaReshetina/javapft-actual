@@ -1,17 +1,22 @@
 package ru.stqa.pft.mantis.appmanager;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 
 public class HelperBase {
+
     protected ApplicationManager app;
     protected WebDriver wd;
 
     public HelperBase(ApplicationManager app) {
         this.app = app;
         this.wd = app.getDriver();
+    }
+
+    public HelperBase() {
     }
 
     protected void click(By locator) {
@@ -32,6 +37,15 @@ public class HelperBase {
     protected void attach(By locator, File file) {
         if (file != null) {
             wd.findElement(locator).sendKeys(file.getAbsolutePath());
+        }
+    }
+
+    protected boolean isElementPresent(By locator) {
+        try {
+            wd.findElement(locator);
+            return true;
+        } catch (NoSuchElementException ex) {
+            return false;
         }
     }
 }

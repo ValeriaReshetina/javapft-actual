@@ -15,16 +15,18 @@ import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
     private final Properties properties;
-    WebDriver wd;
+
+    public WebDriver wd;
 
     private String browser;
     private RegistrationHelper registrationHelper;
     private FtpHelper ftp;
     private MailHelper mailHelper;
     private JamesHelper jamesHelper;
+    private DbHelper dbHelper;
+    private SessionHelper sessionHelper;
 
-
-    public ApplicationManager(String browser)  {
+    public ApplicationManager(String browser) {
         this.browser = browser;
         properties = new Properties();
     }
@@ -94,5 +96,18 @@ public class ApplicationManager {
             jamesHelper = new JamesHelper(this);
         }
         return jamesHelper;
+    }
+
+    public DbHelper db() {
+        if (dbHelper == null) {
+            dbHelper = new DbHelper(this);
+        }
+        return dbHelper;
+    }
+    public SessionHelper sessionHelper() {
+        if (sessionHelper == null) {
+            sessionHelper = new SessionHelper(wd);
+        }
+        return sessionHelper;
     }
 }
