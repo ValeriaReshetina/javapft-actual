@@ -25,12 +25,12 @@ public class RegistrationTests extends TestBase {
         String user = String.format("user%s", now);
         String password = "password";
         String email = String.format("user%s@localhost", now);
-        app.james().createUser(user, password);
+        app.jamesMailAgent().createUser(user, password);
         app.registration().start(user, email);
         //List<MailMessage> mailMessages = app.mail().waitForMail(2, 1000);
-        List<MailMessage>mailMessages = app.james().waitForMail(user, password, 60000);
+        List<MailMessage>mailMessages = app.jamesMailAgent().waitForMail(user, password, 60000);
         String confirmationLink = findConfirmationLink(mailMessages, email);
-        app.registration().finish(confirmationLink, "password");
+        app.registration().finishRegistration(confirmationLink, "password");
         assertTrue(app.newSession().login(user, password));
     }
 

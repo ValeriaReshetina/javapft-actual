@@ -13,6 +13,14 @@ public class TestBase {
     protected static final ApplicationManager app =
             new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
 
+    static {
+        try {
+            app.init();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @BeforeSuite(alwaysRun = true)
     public void setUp() throws Exception {
         app.init();

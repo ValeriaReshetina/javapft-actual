@@ -1,5 +1,11 @@
 package ru.stqa.pft.mantis.tests;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.lanwen.verbalregex.VerbalExpression;
 import ru.stqa.pft.mantis.appmanager.AdminHelper;
@@ -16,27 +22,61 @@ import static org.testng.Assert.assertTrue;
 
 public class ResetPasswordTests extends TestBase {
 
-    @Test
-    public void testForChangingPassword() throws MessagingException, IOException {
-        AdminHelper adminHelper = new AdminHelper(app);
-        long now = System.currentTimeMillis();
-        Users users = app.db().users();
-        UserData userForPasswordReset = users.iterator().next();
-        String user = String.format("user%s", now);
+    private SessionFactory sessionFactory;
+    AdminHelper adminHelper = new AdminHelper(app);
+
+    @BeforeMethod
+    public void setUp() throws Exception {
+        super.setUp();
         app.getDriver();
-        String email = String.format(userForPasswordReset.getEmail());
-        String username = String.format(userForPasswordReset.getUsername());
-        String password = String.format(userForPasswordReset.getPassword());
-        app.james().createUser(username, password);
-        String newPassword = String.format("password%s", now);
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+        try {
+            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        } catch (Exception e) {
+            StandardServiceRegistryBuilder.destroy(registry);
+        }
+    }
+
+    @Test
+    public void testForChangingPassword() throws MessagingException, IOException, InterruptedException {
+        long nowTime = System.currentTimeMillis();
+
+        String userName = String.format("user%s", nowTime);
+        String userPassword = "password";
+        String email = String.format("user%s@localhost", nowTime);
+
+        app.jamesMailAgent().createUser(userName, userPassword);
+        app.registration().start(userName, email);
+
+        List<MailMessage>mailMessages = app.jamesMailAgent().waitForMail(userName, userPassword, 60000);
+        String confirmationLink = getConfirmationLink(mailMessages, email);
+
+        app.registration().finishRegistration(confirmationLink, "password");
+
+        app.jamesMailAgent().drainEmail(userName, userPassword);
+
+        Users usersSet = app.db().users();
+        Integer createdUserId = null;
+
+        for (UserData user : usersSet) {
+            if (user.getUsername().equals(userName)){
+                createdUserId = user.getId();
+            }
+        }
+        Assert.assertNotNull(createdUserId, "Can't get created user ID");
+
+        String newUserPassword = String.format("password%s", nowTime);
+
         adminHelper.authorization();
         adminHelper.goToUsersControlPanel();
-        adminHelper.selectUserById(userForPasswordReset.getId());
-        adminHelper.resetUserPasswordButton(user);
-        List<MailMessage>mailMessages = app.james().waitForMail(user, password, 60000);
-        String confirmationLink = getConfirmationLink(mailMessages, email);
-        app.registration().finish(confirmationLink, "password");
-        assertTrue(app.newSession().login(user, password));
+        adminHelper.selectUserById(createdUserId);
+        adminHelper.resetCurrentUserPassword();
+
+        mailMessages = app.jamesMailAgent().waitForMail(userName, userPassword, 60000);
+        String resetPasswordLink = getConfirmationLink(mailMessages, email);
+
+        adminHelper.changePassword(resetPasswordLink, userName, newUserPassword, newUserPassword);
+        assertTrue(app.newSession().login(userName, newUserPassword));
     }
 
     public String getConfirmationLink(List<MailMessage> mailMessages, String email) {
